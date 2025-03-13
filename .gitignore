@@ -50,3 +50,15 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+
+
+# remove other files
+.settings/
+Debug/
+Drivers/
+.cproject
+.mxproject
+STM32L031G6UXS_FLASH
+test_pcb Debug.launch
+
