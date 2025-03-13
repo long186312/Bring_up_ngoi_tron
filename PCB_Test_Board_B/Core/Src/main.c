@@ -43,7 +43,7 @@
 
 /* USER CODE BEGIN PV */
 volatile int8_t cnt = 0;
-//volatile int8_t PWR_7V_PG_Value = 0, EN_PWR_7V = 0;
+volatile int8_t PWR_7V_PG_Value = 0, EN_PWR_7V = 0;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -88,7 +88,7 @@ int main(void)
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
   /* USER CODE BEGIN 2 */
-//  HAL_GPIO_WritePin(Pwr_7V_EN_GPIO_Port, Pwr_7V_EN_Pin, 0);
+  HAL_GPIO_WritePin(Pwr_7V_EN_GPIO_Port, Pwr_7V_EN_Pin, 0);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -98,10 +98,10 @@ int main(void)
 	  cnt ++;
 	  HAL_Delay(1000);
 
-//	  if (EN_PWR_7V != 0) HAL_GPIO_WritePin(Pwr_7V_EN_GPIO_Port, Pwr_7V_EN_Pin, 1);
-//	  else HAL_GPIO_WritePin(Pwr_7V_EN_GPIO_Port, Pwr_7V_EN_Pin, 0);
-//
-//	  PWR_7V_PG_Value = HAL_GPIO_ReadPin(Pwr_7V_PGood_GPIO_Port, Pwr_7V_PGood_Pin);
+	  if (EN_PWR_7V != 0) HAL_GPIO_WritePin(Pwr_7V_EN_GPIO_Port, Pwr_7V_EN_Pin, 1);
+	  else HAL_GPIO_WritePin(Pwr_7V_EN_GPIO_Port, Pwr_7V_EN_Pin, 0);
+
+	  PWR_7V_PG_Value = HAL_GPIO_ReadPin(Pwr_7V_PGood_GPIO_Port, Pwr_7V_PGood_Pin);
 
     /* USER CODE END WHILE */
 
@@ -160,11 +160,28 @@ void SystemClock_Config(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
 /* USER CODE BEGIN MX_GPIO_Init_1 */
 /* USER CODE END MX_GPIO_Init_1 */
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(Pwr_7V_EN_GPIO_Port, Pwr_7V_EN_Pin, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : Pwr_7V_PGood_Pin */
+  GPIO_InitStruct.Pin = Pwr_7V_PGood_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  HAL_GPIO_Init(Pwr_7V_PGood_GPIO_Port, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : Pwr_7V_EN_Pin */
+  GPIO_InitStruct.Pin = Pwr_7V_EN_Pin;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(Pwr_7V_EN_GPIO_Port, &GPIO_InitStruct);
 
 /* USER CODE BEGIN MX_GPIO_Init_2 */
 /* USER CODE END MX_GPIO_Init_2 */
